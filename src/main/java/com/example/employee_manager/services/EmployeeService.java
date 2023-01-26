@@ -18,7 +18,7 @@ public class EmployeeService {
         this.employeeRepo = employeeRepo;
     }
 
-    public Employee createEmployee(EmployeeDTO employeeDTO) {
+    public void createEmployee(EmployeeDTO employeeDTO) {
         Optional<Employee> employeeOptional = employeeRepo.findEmployeeById(employeeDTO.id);
         if(employeeOptional.isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -31,15 +31,14 @@ public class EmployeeService {
         employee.setImageURL(employeeDTO.imageURL);
         employee.setEmployeeCode(UUID.randomUUID().toString());
         employeeRepo.save(employee);
-        return employee;
     }
 
     public Iterable<Employee> findAllEmployees() {
         return employeeRepo.findAll();
     }
 
-    public Employee findEmployeeById(EmployeeDTO employeeDTO) {
-        Optional<Employee> employeeOptional = employeeRepo.findEmployeeById(employeeDTO.id);
+    public Employee findEmployeeById(Long id) {
+        Optional<Employee> employeeOptional = employeeRepo.findById(id);
         if(employeeOptional.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return employeeOptional.get();
@@ -52,8 +51,8 @@ public class EmployeeService {
         employeeRepo.deleteById(id);
     }
 
-    public void updateEmployee(EmployeeDTO employeeDTO) {
-        Optional<Employee> employeeOptional = employeeRepo.findEmployeeById(employeeDTO.id);
+    public void updateEmployee(Long id, EmployeeDTO employeeDTO) {
+        Optional<Employee> employeeOptional = employeeRepo.findById(id);
         if(employeeOptional.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         Employee employee = employeeOptional.get();
