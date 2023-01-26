@@ -37,24 +37,24 @@ public class EmployeeService {
         return employeeRepo.findAll();
     }
 
-    public Employee findEmployeeById(Long id) {
+    public Employee findEmployeeById(Long id) throws Exception {
         Optional<Employee> employeeOptional = employeeRepo.findById(id);
         if(employeeOptional.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new Exception();
         return employeeOptional.get();
     }
 
-    public void deleteEmployee(Long id) {
+    public void deleteEmployee(Long id) throws Exception {
         Optional<Employee> employee = employeeRepo.findById(id);
         if(employee.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new Exception();
         employeeRepo.deleteById(id);
     }
 
-    public void updateEmployee(Long id, EmployeeDTO employeeDTO) {
+    public void updateEmployee(Long id, EmployeeDTO employeeDTO) throws Exception {
         Optional<Employee> employeeOptional = employeeRepo.findById(id);
         if(employeeOptional.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new Exception();
         Employee employee = employeeOptional.get();
         employee.setFirstName(employeeDTO.firstName);
         employee.setLastName(employeeDTO.lastName);
